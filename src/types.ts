@@ -6,8 +6,11 @@ export interface EnrollmentData {
   childName: string;
   childGrade: string;
   subject: string;
+  subjects?: string[];
   format: "In-Person" | "Online Live" | "1-on-1 Dedicated";
   preferredTime: string;
+  assessmentDate?: string;
+  assessmentTime?: string;
   notes?: string;
   status?: "Pending" | "Contacted" | "Approved" | "Enrolled" | "Archived";
   createdAt?: string;

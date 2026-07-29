@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { ACADEMY_INFO } from "../data";
-import { Phone, MapPin, Clock, Send, CheckCircle2, Loader2, Sparkles, UserCheck } from "lucide-react";
+import { Phone, MapPin, Clock, Send, CheckCircle2, Loader2, Sparkles } from "lucide-react";
 import { EnrollmentForm } from "./EnrollmentForm";
 
 interface ContactSectionProps {
@@ -52,7 +52,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedSubje
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-24 bg-gradient-to-b from-purple-50/60 via-yellow-50/40 to-emerald-50/60 text-purple-950 relative border-t border-purple-100">
+    <section id="contact" className="py-16 sm:py-24 bg-yellow-50 text-purple-950 relative border-t border-purple-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
@@ -63,10 +63,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedSubje
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto space-y-3 mb-10"
         >
-          <div className="inline-flex items-center space-x-2 bg-yellow-100 text-amber-900 border border-yellow-300 px-3.5 py-1 rounded-full text-xs font-black tracking-wide uppercase">
+          {/**<div className="inline-flex items-center space-x-2 bg-yellow-100 text-amber-900 border border-yellow-300 px-3.5 py-1 rounded-full text-xs font-black tracking-wide uppercase">
             <Sparkles className="w-3.5 h-3.5 text-amber-600" />
             <span>Contact & Enrollment</span>
-          </div>
+          </div>*/}
           <h2 className="text-3xl sm:text-4xl font-black text-purple-950 tracking-tight">
             Get in Touch or Enroll Your Child
           </h2>
@@ -76,7 +76,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedSubje
         </motion.div>
 
         {/* Contact Info Cards Bar (Phone numbers, Location, Hours, Rate) */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
           
           {/* Phone Numbers */}
           <motion.div
@@ -91,9 +91,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedSubje
               <p className="text-xs text-purple-900 mt-1 font-semibold">
                 <a href={`tel:${ACADEMY_INFO.primaryPhone}`} className="hover:text-amber-700 underline">{ACADEMY_INFO.primaryPhone}</a>
               </p>
-              <p className="text-xs text-purple-900 font-semibold">
+              {/*<p className="text-xs text-purple-900 font-semibold">
                 <a href={`tel:${ACADEMY_INFO.secondaryPhone}`} className="hover:text-amber-700 underline">{ACADEMY_INFO.secondaryPhone}</a>
-              </p>
+              </p>*/}
             </div>
           </motion.div>
 
@@ -123,23 +123,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedSubje
             </div>
             <div>
               <strong className="text-purple-950 block font-black text-sm">Hours:</strong>
-              <p className="text-xs text-purple-900/80 mt-1 font-medium">Mon-Fri: 3PM - 8PM</p>
-              <p className="text-xs text-purple-900/80 font-medium">Sat: 9AM - 5PM</p>
-            </div>
-          </motion.div>
-
-          {/* Rate Badge */}
-          <motion.div
-            whileHover={{ scale: 1.04, translateY: -3 }}
-            className="bg-gradient-to-br from-yellow-100 to-amber-100 rounded-3xl p-5 border-2 border-yellow-300 shadow-sm flex items-start space-x-3"
-          >
-            <div className="p-2.5 bg-amber-200 text-amber-900 rounded-2xl flex-shrink-0">
-              <UserCheck className="w-5 h-5" />
-            </div>
-            <div>
-              <strong className="text-amber-950 block font-black text-sm">Transparent Rate:</strong>
-              <span className="text-2xl font-black text-purple-950 block">${ACADEMY_INFO.hourlyRate} / hr</span>
-              <span className="text-[10px] font-bold text-amber-900 uppercase tracking-wider block">No Fine Print</span>
+              <p className="text-xs text-purple-900/80 mt-1 font-medium">Mon-Fri: 8AM - 5PM</p>
+              <p className="text-xs text-purple-900/80 font-medium">Weekday sessions only</p>
             </div>
           </motion.div>
 
@@ -280,7 +265,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedSubje
                   whileTap={{ scale: 0.95 }}
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-amber-400 to-yellow-300 hover:from-amber-500 hover:to-yellow-400 text-purple-950 font-black py-3 rounded-2xl text-sm transition-all shadow border border-amber-300 cursor-pointer flex items-center justify-center"
+                  className="w-full bg-yellow-300 hover:bg-yellow-400 text-purple-950 font-black py-3 rounded-2xl text-sm transition-all shadow border border-yellow-400 cursor-pointer flex items-center justify-center"
                 >
                   {loading ? (
                     <Loader2 className="w-4 h-4 animate-spin mr-2" />

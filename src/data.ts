@@ -4,32 +4,30 @@ export const ACADEMY_INFO = {
   name: "Brainy Bunch Learning Academy",
   tagline: "Unlocking Every Child's Brilliance & Academic Confidence",
   locationShort: "Irving, TX",
-  locationFull: "1200 N MacArthur Blvd, Suite 210, Irving, TX 75061",
+  locationFull: "TBD",
   regionArea: "Irving, Las Colinas, Coppell & Dallas Area (+ Online Anywhere)",
-  primaryPhone: "(972) 555-0199",
-  secondaryPhone: "(469) 555-0182",
+  primaryPhone: "(469) 387-7880",
+  //secondaryPhone: "(469) 555-0182",
   email: "enroll@brainybunchacademy.com",
   hourlyRate: 25,
   grades: "K – 8th Grade Focus",
   totalClasses: 5,
   operatingHours: [
-    { days: "Monday – Friday", hours: "3:00 PM – 8:00 PM" },
-    { days: "Saturday", hours: "9:00 AM – 5:00 PM" },
-    { days: "Sunday", hours: "By Appointment / Online Only" },
+    { days: "Monday – Friday", hours: "8:00 AM – 5:00 PM" },
   ],
   founders: [
     {
-      name: "Dr. Emily Reynolds",
-      role: "Co-Founder & Academic Director",
-      bio: "15+ years in educational psychology & K-8 curriculum design with a passion for confidence-first learning.",
-      initials: "ER",
+      name: "Priyanka Turaga",
+      role: "Founder & Tutor",
+      bio: "Additional information to be added",
+      initials: "PT",
     },
-    {
-      name: "Prof. Rajesh Kumar",
-      role: "Co-Founder & Head of STEM Studies",
-      bio: "Former educator and passionate mentor dedicated to making math & science engaging, intuitive, and fun.",
-      initials: "RK",
-    },
+    //{
+    //  name: "Prof. Rajesh Kumar",
+    //  role: "Co-Founder & Head of STEM Studies",
+    //  bio: "Former educator and passionate mentor dedicated to making math & science engaging, intuitive, and fun.",
+    //  initials: "RK",
+    //},
   ],
 };
 
@@ -61,8 +59,8 @@ export const WHY_US_FEATURES: FeatureItem[] = [
   {
     id: "flexible-scheduling",
     title: "Flexible Schedules & Easy Rescheduling",
-    description: "Convenient weekday afternoon, evening, and Saturday slots. Easily adapt sessions around sports and family life.",
-    stat: "6 Days",
+    description: "Convenient weekday afternoon and evening slots. Easily adapt sessions around sports and family life.",
+    stat: "Weekdays",
     statLabel: "Flexible Slots",
     iconName: "Clock",
   },
@@ -198,8 +196,8 @@ export const FORMATS_LIST: FormatItem[] = [
 
 export const FAQS_LIST = [
   {
-    question: "How does the $25/hour rate work? Are there hidden fees?",
-    answer: "No hidden fees or surprise registration costs! Our rate is a flat $25 per hour for all K-8 subjects. You get full access to custom materials and progress tracking included in the $25 rate.",
+    question: "What are your tutoring rates?",
+    answer: "We are currently finalizing our pricing structure. Contact us for a free initial assessment and we'll share current rates with you — no hidden fees or surprise registration costs.",
   },
   {
     question: "Do you offer a free initial assessment?",

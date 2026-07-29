@@ -13,6 +13,8 @@ interface Enrollment {
   subject: string;
   format: "In-Person" | "Online Live" | "1-on-1 Dedicated";
   preferredTime: string;
+  assessmentDate?: string;
+  assessmentTime?: string;
   notes?: string;
   status: "Pending" | "Contacted" | "Approved" | "Enrolled" | "Archived";
   createdAt: string;
@@ -202,7 +204,7 @@ async function startServer() {
 
   // API Route: Create Enrollment
   app.post("/api/enrollments", (req, res) => {
-    const { parentName, parentEmail, parentPhone, childName, childGrade, subject, format, preferredTime, notes } = req.body;
+    const { parentName, parentEmail, parentPhone, childName, childGrade, subject, format, preferredTime, assessmentDate, assessmentTime, notes } = req.body;
 
     if (!parentName || !parentEmail || !childName || !childGrade || !subject || !format) {
       return res.status(400).json({ error: "Missing required fields for enrollment." });
@@ -223,6 +225,8 @@ async function startServer() {
       subject,
       format: format || "In-Person",
       preferredTime: preferredTime || "Flexible",
+      assessmentDate: assessmentDate || "",
+      assessmentTime: assessmentTime || "",
       notes: notes || "",
       status: "Pending",
       createdAt: new Date().toISOString(),

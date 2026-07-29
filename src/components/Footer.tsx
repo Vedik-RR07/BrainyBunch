@@ -33,9 +33,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenEnrollment })
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onOpenEnrollment}
-                className="bg-gradient-to-r from-amber-400 to-yellow-300 hover:from-amber-500 hover:to-yellow-400 text-purple-950 font-black px-4 py-2.5 rounded-2xl text-xs transition-colors cursor-pointer border border-amber-300 shadow"
+                className="bg-yellow-300 hover:bg-yellow-400 text-purple-950 font-black px-4 py-2.5 rounded-2xl text-xs transition-colors cursor-pointer border border-yellow-400 shadow"
               >
-                Enroll Your Child ($25/hr)
+                Enroll Your Child
               </motion.button>
             </div>
           </div>
@@ -117,7 +117,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenEnrollment })
               Staff Dashboard
             </button>
             <span>•</span>
-            <span className="text-amber-300 font-bold">Rate: $25/hr Flat Fee</span>
+            <span className="text-yellow-200 font-bold">Pricing details coming soon</span>
           </div>
         </div>
 

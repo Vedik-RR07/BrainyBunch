@@ -1,1 +1,43 @@
 @import "tailwindcss";
+@import "react-day-picker/style.css";
+
+@theme {
+  --color-background: #fefce8;
+  --color-foreground: #3b0764;
+  --color-primary: #7c3aed;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #dcfce7;
+  --color-secondary-foreground: #14532d;
+  --color-muted: #f3e8ff;
+  --color-muted-foreground: #6b21a8;
+  --color-accent: #fef08a;
+  --color-accent-foreground: #713f12;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #e9d5ff;
+  --color-input: #e9d5ff;
+  --color-ring: #a855f7;
+}
+
+:root {
+  --background: #fefce8;
+  --foreground: #3b0764;
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --secondary: #dcfce7;
+  --secondary-foreground: #14532d;
+  --muted: #f3e8ff;
+  --muted-foreground: #6b21a8;
+  --accent: #fef08a;
+  --accent-foreground: #713f12;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e9d5ff;
+  --input: #e9d5ff;
+  --ring: #a855f7;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}

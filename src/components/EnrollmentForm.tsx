@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
+import { format } from "date-fns";
 import { EnrollmentData } from "../types";
-import { SUBJECTS_LIST, ACADEMY_INFO } from "../data";
-import { Sparkles, CheckCircle2, User, Mail, Phone, GraduationCap, Clock, Send, Loader2, Copy, Check } from "lucide-react";
+import { SUBJECTS_LIST } from "../data";
+import { AssessmentDatePicker } from "./AssessmentDatePicker";
+import { Sparkles, CheckCircle2, User, Mail, Phone, GraduationCap, Clock, Send, Loader2, Copy, Check, CalendarDays } from "lucide-react";
 
 interface EnrollmentFormProps {
   preselectedSubject?: string;
@@ -10,21 +12,28 @@ interface EnrollmentFormProps {
 }
 
 export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubject, preselectedFormat }) => {
-  const [formData, setFormData] = useState<EnrollmentData>({
+  const [selectedSubjects, setSelectedSubjects] = useState<string[]>(
+    preselectedSubject ? [preselectedSubject] : ["English"]
+  );
+  const [assessmentDate, setAssessmentDate] = useState<Date | undefined>(undefined);
+  const [assessmentTime, setAssessmentTime] = useState<string | null>(null);
+
+  const [formData, setFormData] = useState<Omit<EnrollmentData, "subject" | "subjects" | "assessmentDate" | "assessmentTime">>({
     parentName: "",
     parentEmail: "",
     parentPhone: "",
     childName: "",
     childGrade: "5th Grade",
-    subject: preselectedSubject || "English",
     format: preselectedFormat || "In-Person",
-    preferredTime: "Weekday Afternoons (4:00 PM - 6:00 PM)",
+    preferredTime: "Weekday Afternoons (3:00 PM – 5:00 PM)",
     notes: "",
   });
 
   useEffect(() => {
     if (preselectedSubject) {
-      setFormData((prev) => ({ ...prev, subject: preselectedSubject }));
+      setSelectedSubjects((prev) =>
+        prev.includes(preselectedSubject) ? prev : [...prev, preselectedSubject]
+      );
     }
     if (preselectedFormat) {
       setFormData((prev) => ({ ...prev, format: preselectedFormat }));
@@ -51,21 +60,44 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
   const timeOptions = [
     "Weekday Afternoons (3:00 PM – 5:00 PM)",
     "Weekday Evenings (5:00 PM – 8:00 PM)",
-    "Saturday Mornings (9:00 AM – 12:00 PM)",
-    "Saturday Afternoons (1:00 PM – 5:00 PM)",
-    "Flexible / Custom Days",
+    "Flexible / Custom Weekdays",
   ];
+
+  const toggleSubject = (title: string) => {
+    setSelectedSubjects((prev) =>
+      prev.includes(title) ? prev.filter((s) => s !== title) : [...prev, title]
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (selectedSubjects.length === 0) {
+      setErrorMessage("Please select at least one subject.");
+      return;
+    }
+
+    if (!assessmentDate || !assessmentTime) {
+      setErrorMessage("Please select a date and time for your initial assessment.");
+      return;
+    }
+
     setLoading(true);
     setErrorMessage("");
+
+    const payload: EnrollmentData = {
+      ...formData,
+      subject: selectedSubjects.join(", "),
+      subjects: selectedSubjects,
+      assessmentDate: format(assessmentDate, "yyyy-MM-dd"),
+      assessmentTime,
+    };
 
     try {
       const response = await fetch("/api/enrollments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const resData = await response.json();
@@ -75,8 +107,9 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
       }
 
       setSubmittedResult(resData.enrollment);
-    } catch (err: any) {
-      setErrorMessage(err.message || "An unexpected error occurred. Please try again.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "An unexpected error occurred. Please try again.";
+      setErrorMessage(message);
     } finally {
       setLoading(false);
     }
@@ -91,10 +124,9 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
   };
 
   return (
-    <div id="enroll" className="mt-12 bg-white rounded-3xl border-2 border-purple-200 shadow-xl p-6 sm:p-10 relative">
+    <div id="enroll" className="mt-12 bg-white/80 backdrop-blur-md rounded-3xl border-2 border-purple-200 shadow-xl p-6 sm:p-10 relative">
       <div className="max-w-3xl mx-auto">
-        
-        {/* Header */}
+
         <div className="text-center space-y-2 mb-8">
           <div className="inline-flex items-center space-x-2 bg-yellow-100 text-amber-900 border border-yellow-300 px-3.5 py-1 rounded-full text-xs font-black tracking-wide uppercase">
             <Sparkles className="w-3.5 h-3.5 text-amber-600" />
@@ -109,7 +141,6 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
         </div>
 
         {submittedResult ? (
-          /* Confirmation Celebration State */
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -129,11 +160,10 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
               </p>
             </div>
 
-            {/* Confirmation Code Card */}
             <div className="bg-purple-950 text-white rounded-2xl p-5 max-w-md mx-auto space-y-2 border border-purple-800 shadow-md">
               <span className="text-xs text-purple-300 uppercase tracking-wider block font-bold">Official Confirmation ID</span>
               <div className="flex items-center justify-center space-x-3">
-                <span className="text-2xl font-black tracking-wider text-amber-300 font-mono">
+                <span className="text-2xl font-black tracking-wider text-yellow-200 font-mono">
                   {submittedResult.confirmationCode}
                 </span>
                 <button
@@ -146,14 +176,15 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
               </div>
             </div>
 
-            {/* Summary details */}
-            <div className="bg-yellow-50/80 rounded-2xl p-5 text-left max-w-md mx-auto space-y-2 text-xs text-purple-950 border border-yellow-200 font-medium">
+            <div className="bg-yellow-50 rounded-2xl p-5 text-left max-w-md mx-auto space-y-2 text-xs text-purple-950 border border-yellow-200 font-medium">
               <p><strong>Parent Name:</strong> {submittedResult.parentName}</p>
-              <p><strong>Subject Selected:</strong> {submittedResult.subject}</p>
+              <p><strong>Subjects Selected:</strong> {submittedResult.subject}</p>
               <p><strong>Grade Level:</strong> {submittedResult.childGrade}</p>
               <p><strong>Format Preference:</strong> {submittedResult.format}</p>
               <p><strong>Preferred Time:</strong> {submittedResult.preferredTime}</p>
-              <p><strong>Hourly Rate:</strong> <span className="text-amber-800 font-bold">${ACADEMY_INFO.hourlyRate}/hr</span></p>
+              {submittedResult.assessmentDate && submittedResult.assessmentTime && (
+                <p><strong>Initial Assessment:</strong> {submittedResult.assessmentDate} at {submittedResult.assessmentTime}</p>
+              )}
             </div>
 
             <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
@@ -168,19 +199,17 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
             </div>
           </motion.div>
         ) : (
-          /* Enrollment Application Form */
           <form onSubmit={handleSubmit} className="space-y-6">
-            
+
             {errorMessage && (
               <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl text-xs font-bold">
                 {errorMessage}
               </div>
             )}
 
-            {/* Section 1: Parent Info */}
             <div className="space-y-4">
-              <h4 className="text-xs font-black text-amber-800 uppercase tracking-wider flex items-center pb-2 border-b border-purple-100">
-                <User className="w-4 h-4 mr-1.5 text-amber-600" /> 1. Parent or Guardian Details
+              <h4 className="text-xs font-black text-purple-950 uppercase tracking-wider flex items-center pb-2 border-b border-purple-200">
+                <User className="w-4 h-4 mr-1.5 text-purple-700" /> 1. Parent or Guardian Details
               </h4>
 
               <div className="grid sm:grid-cols-2 gap-4">
@@ -231,10 +260,9 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
               </div>
             </div>
 
-            {/* Section 2: Student & Subject Info */}
             <div className="space-y-4 pt-2">
-              <h4 className="text-xs font-black text-purple-800 uppercase tracking-wider flex items-center pb-2 border-b border-purple-100">
-                <GraduationCap className="w-4 h-4 mr-1.5 text-purple-600" /> 2. Student & Class Details
+              <h4 className="text-xs font-black text-purple-950 uppercase tracking-wider flex items-center pb-2 border-b border-purple-200">
+                <GraduationCap className="w-4 h-4 mr-1.5 text-purple-700" /> 2. Student & Class Details
               </h4>
 
               <div className="grid sm:grid-cols-2 gap-4">
@@ -266,26 +294,39 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-purple-950 mb-1">Subject / Class Requested *</label>
-                  <select
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-purple-50/50 border border-purple-200 rounded-2xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-purple-950 font-bold"
-                  >
-                    {SUBJECTS_LIST.map((sub) => (
-                      <option key={sub.id} value={sub.title}>
-                        {sub.title} ({sub.category})
-                      </option>
-                    ))}
-                  </select>
+                  <label className="block text-xs font-bold text-purple-950 mb-2">
+                    Subjects Requested * <span className="font-normal text-purple-700">(select one or more)</span>
+                  </label>
+                  <div className="grid sm:grid-cols-2 gap-2">
+                    {SUBJECTS_LIST.map((sub) => {
+                      const isSelected = selectedSubjects.includes(sub.title);
+                      return (
+                        <label
+                          key={sub.id}
+                          className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-colors text-sm font-medium ${
+                            isSelected
+                              ? "bg-purple-100 border-purple-400 text-purple-950"
+                              : "bg-white border-purple-200 text-purple-900 hover:bg-purple-50"
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => toggleSubject(sub.title)}
+                            className="rounded border-purple-300 text-purple-700 focus:ring-purple-500"
+                          />
+                          {sub.title}
+                        </label>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Section 3: Preference & Notes */}
             <div className="space-y-4 pt-2">
-              <h4 className="text-xs font-black text-emerald-800 uppercase tracking-wider flex items-center pb-2 border-b border-purple-100">
-                <Clock className="w-4 h-4 mr-1.5 text-emerald-600" /> 3. Session Format & Schedule
+              <h4 className="text-xs font-black text-purple-950 uppercase tracking-wider flex items-center pb-2 border-b border-purple-200">
+                <Clock className="w-4 h-4 mr-1.5 text-purple-700" /> 3. Session Format & Schedule
               </h4>
 
               <div className="grid sm:grid-cols-2 gap-4">
@@ -293,7 +334,7 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
                   <label className="block text-xs font-bold text-purple-950 mb-1">Format Preference *</label>
                   <select
                     value={formData.format}
-                    onChange={(e) => setFormData({ ...formData, format: e.target.value as any })}
+                    onChange={(e) => setFormData({ ...formData, format: e.target.value as EnrollmentData["format"] })}
                     className="w-full px-4 py-2.5 bg-purple-50/50 border border-purple-200 rounded-2xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-purple-950 font-bold"
                   >
                     <option value="In-Person">In-Person (Irving Campus)</option>
@@ -303,7 +344,7 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-purple-950 mb-1">Preferred Time Window</label>
+                  <label className="block text-xs font-bold text-purple-950 mb-1">Preferred Time Window (Weekdays Only)</label>
                   <select
                     value={formData.preferredTime}
                     onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
@@ -332,7 +373,26 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
               </div>
             </div>
 
-            {/* Submit Button with Hover Magnification */}
+            <div className="space-y-4 pt-2">
+              <h4 className="text-xs font-black text-purple-950 uppercase tracking-wider flex items-center pb-2 border-b border-purple-200">
+                <CalendarDays className="w-4 h-4 mr-1.5 text-purple-700" /> 4. Schedule Initial Assessment
+              </h4>
+              <p className="text-xs text-purple-800/80 font-medium">
+                Choose a weekday and time for your child's free initial assessment. Our team will confirm availability within 24 hours.
+              </p>
+              <AssessmentDatePicker
+                selectedDate={assessmentDate}
+                selectedTime={assessmentTime}
+                onDateChange={setAssessmentDate}
+                onTimeChange={setAssessmentTime}
+              />
+              {assessmentDate && assessmentTime && (
+                <p className="text-xs text-purple-900 font-semibold">
+                  Selected: {format(assessmentDate, "EEEE, MMMM d, yyyy")} at {assessmentTime}
+                </p>
+              )}
+            </div>
+
             <div className="pt-2">
               <motion.button
                 whileHover={{ scale: 1.05, translateY: -2 }}
@@ -340,7 +400,7 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
                 type="submit"
                 disabled={loading}
                 id="submit-enrollment-btn"
-                className="w-full bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-300 hover:from-amber-500 hover:to-yellow-400 text-purple-950 font-black text-base py-4 rounded-2xl shadow-md hover:shadow-xl border border-amber-300 transition-all flex items-center justify-center cursor-pointer"
+                className="w-full bg-yellow-300 hover:bg-yellow-400 text-purple-950 font-black text-base py-4 rounded-2xl shadow-md hover:shadow-xl border border-yellow-400 transition-all flex items-center justify-center cursor-pointer"
               >
                 {loading ? (
                   <>
@@ -350,12 +410,12 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
                 ) : (
                   <>
                     <Send className="w-5 h-5 mr-2 text-purple-950" />
-                    Submit Enrollment Request ($25/hr Flat Rate)
+                    Submit Enrollment Request
                   </>
                 )}
               </motion.button>
               <p className="text-[11px] text-purple-800/70 text-center mt-2 font-medium">
-                🔒 Confidential application • Brainy Bunch Learning Academy Irving, TX
+                Confidential application • Brainy Bunch Learning Academy Irving, TX
               </p>
             </div>
 

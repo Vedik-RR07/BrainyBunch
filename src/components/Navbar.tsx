@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Menu, X, Sparkles, ShieldCheck } from "lucide-react";
+import { Menu, X, ShieldCheck, LogIn, UserPlus } from "lucide-react";
 import { Logo } from "./Logo";
 
 interface NavbarProps {
@@ -8,7 +8,7 @@ interface NavbarProps {
   onOpenAdmin: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenEnrollment, onOpenAdmin }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
@@ -54,7 +54,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnrollment, onOpenAdmin })
 
   return (
     <header className="sticky top-0 z-40 w-full transition-all duration-300">
-      {/* Main Nav Bar (Top bar with rate/phone/portal REMOVED as requested) */}
       <nav
         className={`w-full transition-all duration-300 ${
           isScrolled
@@ -63,8 +62,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnrollment, onOpenAdmin })
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          
-          {/* Logo Component */}
+
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
@@ -74,8 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnrollment, onOpenAdmin })
             <Logo size="md" />
           </motion.button>
 
-          {/* Desktop Navigation Links - ONLY Home, Why Us, Subjects, Contact */}
-          <div className="hidden md:flex items-center space-x-2 bg-purple-50/60 p-1.5 rounded-2xl border border-purple-100">
+          <div className="hidden md:flex items-center space-x-2 bg-purple-50 p-1.5 rounded-2xl border border-purple-100">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -87,7 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnrollment, onOpenAdmin })
                   className={`px-4 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer ${
                     isActive
                       ? "bg-purple-600 text-white shadow-sm"
-                      : "text-purple-900 hover:text-purple-950 hover:bg-yellow-100/70"
+                      : "text-purple-900 hover:text-purple-950 hover:bg-yellow-100"
                   }`}
                 >
                   {link.label}
@@ -96,30 +93,28 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnrollment, onOpenAdmin })
             })}
           </div>
 
-          {/* Action Buttons - Magnified on Hover */}
-          <div className="hidden sm:flex items-center space-x-3">
+          <div className="hidden sm:flex items-center space-x-2">
+            <motion.button
+              whileHover={{ scale: 1.06, translateY: -2 }}
+              whileTap={{ scale: 0.95 }}
+              type="button"
+              className="bg-white hover:bg-purple-50 text-purple-900 font-bold px-4 py-2.5 rounded-2xl border border-purple-200 transition-all flex items-center cursor-pointer text-sm shadow-sm"
+            >
+              <LogIn className="w-4 h-4 mr-2 text-purple-700" />
+              Login
+            </motion.button>
             <motion.button
               whileHover={{ scale: 1.08, translateY: -2 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => onOpenEnrollment()}
-              id="nav-enroll-btn"
-              className="bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-300 hover:from-amber-500 hover:to-yellow-400 text-purple-950 font-black px-5 py-2.5 rounded-2xl shadow-md hover:shadow-xl border border-amber-300/80 transition-all flex items-center cursor-pointer text-sm"
+              type="button"
+              className="bg-yellow-300 hover:bg-yellow-400 text-purple-950 font-black px-5 py-2.5 rounded-2xl shadow-md hover:shadow-lg border border-yellow-400 transition-all flex items-center cursor-pointer text-sm"
             >
-              <Sparkles className="w-4 h-4 mr-2 text-purple-900" />
-              Enroll Now
+              <UserPlus className="w-4 h-4 mr-2 text-purple-900" />
+              Sign Up
             </motion.button>
           </div>
 
-          {/* Mobile Hamburger Toggle */}
           <div className="flex md:hidden items-center space-x-2">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => onOpenEnrollment()}
-              className="sm:hidden bg-amber-400 hover:bg-amber-500 text-purple-950 font-black px-3.5 py-1.5 text-xs rounded-xl shadow-sm border border-amber-300"
-            >
-              Enroll
-            </motion.button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-xl text-purple-950 hover:bg-purple-100/80 focus:outline-none"
@@ -130,7 +125,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnrollment, onOpenAdmin })
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -156,15 +150,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnrollment, onOpenAdmin })
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.96 }}
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenEnrollment();
-                }}
-                className="w-full bg-gradient-to-r from-amber-400 to-yellow-300 text-purple-950 font-black py-3 rounded-2xl shadow-md text-center text-sm border border-amber-300"
+                type="button"
+                className="w-full bg-white text-purple-900 font-bold py-3 rounded-2xl text-center text-sm border border-purple-200 flex items-center justify-center"
               >
-                Enroll Child Now ($25/hr)
+                <LogIn className="w-4 h-4 mr-2" />
+                Login
               </motion.button>
-              
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.96 }}
+                type="button"
+                className="w-full bg-yellow-300 text-purple-950 font-black py-3 rounded-2xl shadow-md text-center text-sm border border-yellow-400 flex items-center justify-center"
+              >
+                <UserPlus className="w-4 h-4 mr-2" />
+                Sign Up
+              </motion.button>
+
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
