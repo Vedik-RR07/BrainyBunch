@@ -1,0 +1,6 @@
+{
+  "name": "Brainy Bunch Learning Academy",
+  "description": "Premier tutoring & learning center in Irving, TX offering K-12 subjects, online & in-person 1-on-1 sessions, transparent $25/hr pricing, and enrollment management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

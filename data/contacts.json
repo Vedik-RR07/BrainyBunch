@@ -1,0 +1,12 @@
+[
+  {
+    "id": "cnt_201",
+    "name": "David Miller",
+    "email": "david.m@example.com",
+    "phone": "(469) 555-0172",
+    "subject": "Summer SAT Test Prep",
+    "message": "Hi, do you offer intensive SAT prep courses for high school juniors in Irving?",
+    "createdAt": "2026-07-26T17:06:15.307Z",
+    "status": "Replied"
+  }
+]

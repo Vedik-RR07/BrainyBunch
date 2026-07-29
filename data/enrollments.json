@@ -1,0 +1,47 @@
+[
+  {
+    "id": "enr_101",
+    "parentName": "Sarah Jenkins",
+    "parentEmail": "sarah.j@example.com",
+    "parentPhone": "(972) 555-0144",
+    "childName": "Ethan Jenkins",
+    "childGrade": "7th Grade",
+    "subject": "Mathematics",
+    "format": "In-Person",
+    "preferredTime": "Mon & Wed Afternoons (4:00 PM)",
+    "notes": "Needs help with Pre-Algebra and building math test confidence.",
+    "status": "Approved",
+    "createdAt": "2026-07-27T17:06:15.306Z",
+    "confirmationCode": "BB-701-SJ"
+  },
+  {
+    "id": "enr_102",
+    "parentName": "Michael Rodriguez",
+    "parentEmail": "mrodriguez@example.com",
+    "parentPhone": "(214) 555-0188",
+    "childName": "Sophia Rodriguez",
+    "childGrade": "10th Grade",
+    "subject": "Coding & Computer Science",
+    "format": "Online Live",
+    "preferredTime": "Saturday Mornings (10:00 AM)",
+    "notes": "Interested in Python programming and problem solving.",
+    "status": "Pending",
+    "createdAt": "2026-07-28T17:06:15.306Z",
+    "confirmationCode": "BB-102-MR"
+  },
+  {
+    "id": "enr_103",
+    "parentName": "Priya Sharma",
+    "parentEmail": "priya.s@example.com",
+    "parentPhone": "(972) 555-0129",
+    "childName": "Aarav Sharma",
+    "childGrade": "4th Grade",
+    "subject": "English & Reading Comprehension",
+    "format": "1-on-1 Dedicated",
+    "preferredTime": "Tue & Thu Evenings (5:30 PM)",
+    "notes": "Looking to excel in reading vocabulary and writing skills.",
+    "status": "Enrolled",
+    "createdAt": "2026-07-25T17:06:15.306Z",
+    "confirmationCode": "BB-403-PS"
+  }
+]
