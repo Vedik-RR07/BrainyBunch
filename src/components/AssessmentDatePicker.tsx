@@ -13,6 +13,8 @@ interface AssessmentDatePickerProps {
 }
 
 const timeSlots = [
+  { time: "08:00 AM", available: true },
+  { time: "08:30 AM", available: true },
   { time: "09:00 AM", available: true },
   { time: "09:30 AM", available: true },
   { time: "10:00 AM", available: true },
@@ -30,7 +32,6 @@ const timeSlots = [
   { time: "4:00 PM", available: true },
   { time: "4:30 PM", available: true },
   { time: "5:00 PM", available: true },
-  { time: "5:30 PM", available: true },
 ];
 
 function isWeekday(date: Date) {

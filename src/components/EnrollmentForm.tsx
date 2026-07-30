@@ -8,7 +8,7 @@ import { Sparkles, CheckCircle2, User, Mail, Phone, GraduationCap, Clock, Send, 
 
 interface EnrollmentFormProps {
   preselectedSubject?: string;
-  preselectedFormat?: "In-Person" | "Online Live" | "1-on-1 Dedicated";
+  preselectedFormat?: "In Person" | "Online" | "Hybrid";
 }
 
 export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubject, preselectedFormat }) => {
@@ -24,8 +24,8 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
     parentPhone: "",
     childName: "",
     childGrade: "5th Grade",
-    format: preselectedFormat || "In-Person",
-    preferredTime: "Weekday Afternoons (3:00 PM – 5:00 PM)",
+    format: preselectedFormat || "In Person",
+    preferredTime: "Weekday Mornings (8:00 AM – 12:00 PM)",
     notes: "",
   });
 
@@ -58,9 +58,9 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
   ];
 
   const timeOptions = [
-    "Weekday Afternoons (3:00 PM – 5:00 PM)",
-    "Weekday Evenings (5:00 PM – 8:00 PM)",
-    "Flexible / Custom Weekdays",
+    "Weekday Mornings (8:00 AM – 12:00 PM)",
+    "Weekday Afternoons (12:00 PM – 5:00 PM)",
+    "Flexible / Custom Weekdays (Specify in Notes)",
   ];
 
   const toggleSubject = (title: string) => {
@@ -337,9 +337,9 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
                     onChange={(e) => setFormData({ ...formData, format: e.target.value as EnrollmentData["format"] })}
                     className="w-full px-4 py-2.5 bg-purple-50/50 border border-purple-200 rounded-2xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-purple-950 font-bold"
                   >
-                    <option value="In-Person">In-Person (Irving Campus)</option>
-                    <option value="Online Live">Online Live Interactive</option>
-                    <option value="1-on-1 Dedicated">1-on-1 Dedicated Sessions</option>
+                    <option value="In Person">In Person</option>
+                    <option value="Online">Online</option>
+                    <option value="Hybrid">Hybrid</option>
                   </select>
                 </div>
 

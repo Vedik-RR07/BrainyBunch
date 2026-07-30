@@ -7,7 +7,7 @@ export interface EnrollmentData {
   childGrade: string;
   subject: string;
   subjects?: string[];
-  format: "In-Person" | "Online Live" | "1-on-1 Dedicated";
+  format: "In Person" | "Online" | "Hybrid";
   preferredTime: string;
   assessmentDate?: string;
   assessmentTime?: string;

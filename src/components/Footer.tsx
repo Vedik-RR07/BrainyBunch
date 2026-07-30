@@ -74,7 +74,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenEnrollment })
               </li>
               <li className="flex items-center">
                 <Phone className="w-3.5 h-3.5 mr-2 text-emerald-300 flex-shrink-0" />
-                {ACADEMY_INFO.primaryPhone} / {ACADEMY_INFO.secondaryPhone}
+                {ACADEMY_INFO.primaryPhone} 
               </li>
               <li className="flex items-center">
                 <Mail className="w-3.5 h-3.5 mr-2 text-purple-300 flex-shrink-0" />

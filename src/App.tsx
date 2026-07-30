@@ -10,9 +10,9 @@ import { Footer } from "./components/Footer";
 export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState<string | undefined>(undefined);
-  const [selectedFormat, setSelectedFormat] = useState<"In-Person" | "Online Live" | "1-on-1 Dedicated" | undefined>(undefined);
+  const [selectedFormat, setSelectedFormat] = useState<"In Person" | "Online" | "Hybrid" | undefined>(undefined);
 
-  const handleOpenEnrollment = (subject?: string, format?: "In-Person" | "Online Live" | "1-on-1 Dedicated") => {
+  const handleOpenEnrollment = (subject?: string, format?: "In Person" | "Online" | "Hybrid") => {
     if (subject) setSelectedSubject(subject);
     if (format) setSelectedFormat(format);
 

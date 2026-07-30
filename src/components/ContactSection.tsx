@@ -6,7 +6,7 @@ import { EnrollmentForm } from "./EnrollmentForm";
 
 interface ContactSectionProps {
   preselectedSubject?: string;
-  preselectedFormat?: "In-Person" | "Online Live" | "1-on-1 Dedicated";
+  preselectedFormat?: "In Person" | "Online" | "Hybrid";
 }
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedSubject, preselectedFormat }) => {
@@ -50,6 +50,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedSubje
       setLoading(false);
     }
   };
+
+  const formatOptions = [
+    { value: "In Person", label: "In Person" },
+    { value: "Online", label: "Online" },
+    { value: "Hybdrid", label: "Hybrid" },
+  ];
+  const timeWindowOptions = [
+    { value: "Weekday Morning 8AM-12PM", label: "Weekday Morning 8AM-12PM" },
+    { value: "Weekday Afternoon 12PM-5PM", label: "Weekday Afternoon 12PM-5PM" },
+    { value: "Flexible", label: "Flexible (please include preferred timing in the Notes or Specific Learning Goals section)" },
+  ];
 
   return (
     <section id="contact" className="py-16 sm:py-24 bg-yellow-50 text-purple-950 relative border-t border-purple-100">

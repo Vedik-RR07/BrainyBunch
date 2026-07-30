@@ -3,7 +3,7 @@ import { FORMATS_LIST } from "../data";
 import { Building2, Video, UserCheck, CheckCircle2, Sparkles, ArrowRight } from "lucide-react";
 
 interface FormatsSectionProps {
-  onOpenEnrollmentWithFormat: (formatName: "In-Person" | "Online Live" | "1-on-1 Dedicated") => void;
+  onOpenEnrollmentWithFormat: (formatName: "In Person" | "Online" | "Hybrid") => void;
 }
 
 export const FormatsSection: React.FC<FormatsSectionProps> = ({ onOpenEnrollmentWithFormat }) => {
@@ -20,10 +20,10 @@ export const FormatsSection: React.FC<FormatsSectionProps> = ({ onOpenEnrollment
     }
   };
 
-  const getFormatEnum = (title: string): "In-Person" | "Online Live" | "1-on-1 Dedicated" => {
-    if (title.includes("In-Person")) return "In-Person";
-    if (title.includes("Online")) return "Online Live";
-    return "1-on-1 Dedicated";
+  const getFormatEnum = (title: string): "In Person" | "Online" | "Hybrid" => {
+    if (title.includes("In-Person")) return "In Person";
+    if (title.includes("Online")) return "Online";
+    return "Hybrid";
   };
 
   return (
