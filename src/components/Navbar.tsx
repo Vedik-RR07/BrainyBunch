@@ -6,9 +6,11 @@ import { Logo } from "./Logo";
 interface NavbarProps {
   onOpenEnrollment: (subject?: string) => void;
   onOpenAdmin: () => void;
+  onOpenSignIn: () => void;
+  onOpenSignUp: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenSignIn, onOpenSignUp }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
@@ -98,6 +100,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
               whileHover={{ scale: 1.06, translateY: -2 }}
               whileTap={{ scale: 0.95 }}
               type="button"
+              onClick={onOpenSignIn}
               className="bg-white hover:bg-purple-50 text-purple-900 font-bold px-4 py-2.5 rounded-2xl border border-purple-200 transition-all flex items-center cursor-pointer text-sm shadow-sm"
             >
               <LogIn className="w-4 h-4 mr-2 text-purple-700" />
@@ -107,6 +110,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
               whileHover={{ scale: 1.08, translateY: -2 }}
               whileTap={{ scale: 0.95 }}
               type="button"
+              onClick={onOpenSignUp}
               className="bg-yellow-300 hover:bg-yellow-400 text-purple-950 font-black px-5 py-2.5 rounded-2xl shadow-md hover:shadow-lg border border-yellow-400 transition-all flex items-center cursor-pointer text-sm"
             >
               <UserPlus className="w-4 h-4 mr-2 text-purple-900" />
@@ -151,6 +155,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.96 }}
                 type="button"
+                onClick={onOpenSignIn}
                 className="w-full bg-white text-purple-900 font-bold py-3 rounded-2xl text-center text-sm border border-purple-200 flex items-center justify-center"
               >
                 <LogIn className="w-4 h-4 mr-2" />
@@ -160,6 +165,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.96 }}
                 type="button"
+                onClick={onOpenSignUp}
                 className="w-full bg-yellow-300 text-purple-950 font-black py-3 rounded-2xl shadow-md text-center text-sm border border-yellow-400 flex items-center justify-center"
               >
                 <UserPlus className="w-4 h-4 mr-2" />

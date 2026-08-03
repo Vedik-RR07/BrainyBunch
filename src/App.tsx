@@ -6,9 +6,14 @@ import { SubjectsSection } from "./components/SubjectsSection";
 import { ContactSection } from "./components/ContactSection";
 import { AdminModal } from "./components/AdminModal";
 import { Footer } from "./components/Footer";
+import SignInPage from "./components/SignInPage";
+import SignUpPage from "./components/SignUpPage";
+
+type ActivePage = "home" | "signin" | "signup";
 
 export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [activePage, setActivePage] = useState<ActivePage>("home");
   const [selectedSubject, setSelectedSubject] = useState<string | undefined>(undefined);
   const [selectedFormat, setSelectedFormat] = useState<"In Person" | "Online" | "Hybrid" | undefined>(undefined);
 
@@ -31,11 +36,27 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white text-purple-950 font-sans antialiased selection:bg-yellow-200 selection:text-purple-950">
-      
+
+      {/* Auth pages overlay */}
+      {activePage === "signin" && (
+        <SignInPage
+          onBack={() => setActivePage("home")}
+          onGoToSignUp={() => setActivePage("signup")}
+        />
+      )}
+      {activePage === "signup" && (
+        <SignUpPage
+          onBack={() => setActivePage("home")}
+          onGoToSignIn={() => setActivePage("signin")}
+        />
+      )}
+
       {/* Sticky Navigation Header */}
       <Navbar
         onOpenEnrollment={(subj) => handleOpenEnrollment(subj)}
         onOpenAdmin={() => setIsAdminOpen(true)}
+        onOpenSignIn={() => setActivePage("signin")}
+        onOpenSignUp={() => setActivePage("signup")}
       />
 
       <main>
