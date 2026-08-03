@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "motion/react";
 import {
   Card,
@@ -11,8 +11,10 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Chrome, ArrowLeft, Sparkles } from "lucide-react";
+import { Chrome, ArrowLeft, Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { Logo } from "./Logo";
 
 interface SignInPageProps {
@@ -21,6 +23,7 @@ interface SignInPageProps {
 }
 
 export default function SignInPage({ onBack, onGoToSignUp }: SignInPageProps) {
+  const [showPassword, setShowPassword] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -129,19 +132,73 @@ export default function SignInPage({ onBack, onGoToSignUp }: SignInPageProps) {
         >
           <Card className="border-purple-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70 shadow-xl">
             <CardHeader className="space-y-1 text-center">
-              <div className="flex justify-center mb-2">
-                <span className="inline-flex items-center gap-1.5 bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Parent & Student Portal
-                </span>
-              </div>
               <CardTitle className="text-2xl text-purple-950">Welcome back</CardTitle>
               <CardDescription className="text-purple-700/70">
                 Sign in to track your child's progress and sessions.
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="grid gap-5">
+            <CardContent className="grid gap-4">
+              {/* Email */}
+              <div className="grid gap-1.5">
+                <Label htmlFor="signin-email" className="text-purple-800 font-bold text-xs uppercase tracking-wide">
+                  Email
+                </Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-purple-400" />
+                  <Input
+                    id="signin-email"
+                    type="email"
+                    placeholder="you@example.com"
+                    className="pl-10 border-purple-200 bg-white text-purple-950 placeholder:text-purple-300 focus-visible:border-purple-400 focus-visible:ring-purple-200"
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div className="grid gap-1.5">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="signin-password" className="text-purple-800 font-bold text-xs uppercase tracking-wide">
+                    Password
+                  </Label>
+                  <a href="#" className="text-xs text-purple-600 hover:text-purple-900 font-medium">
+                    Forgot password?
+                  </a>
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-purple-400" />
+                  <Input
+                    id="signin-password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className="pl-10 pr-10 border-purple-200 bg-white text-purple-950 placeholder:text-purple-300 focus-visible:border-purple-400 focus-visible:ring-purple-200"
+                  />
+                  <button
+                    type="button"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-md text-purple-400 hover:text-purple-700 transition-colors"
+                    onClick={() => setShowPassword((v) => !v)}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Submit */}
+              <button
+                type="button"
+                className="w-full h-11 rounded-2xl bg-yellow-300 hover:bg-yellow-400 text-purple-950 font-black text-sm border border-yellow-400 shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5"
+              >
+                Sign in
+              </button>
+
+              <div className="relative">
+                <Separator className="bg-purple-100" />
+                <span className="absolute left-1/2 -translate-x-1/2 -top-3 bg-white px-3 text-[11px] uppercase tracking-widest text-purple-400 font-bold">
+                  or
+                </span>
+              </div>
+
               {/* Google Sign In */}
               <button
                 type="button"
@@ -150,17 +207,6 @@ export default function SignInPage({ onBack, onGoToSignUp }: SignInPageProps) {
                 <Chrome className="h-5 w-5 text-purple-600" />
                 Continue with Google
               </button>
-
-              <div className="relative">
-                <Separator className="bg-purple-100" />
-                <span className="absolute left-1/2 -translate-x-1/2 -top-3 bg-white px-3 text-[11px] uppercase tracking-widest text-purple-400 font-bold">
-                  secure login
-                </span>
-              </div>
-
-              <p className="text-center text-xs text-purple-600/70 leading-relaxed">
-                We use Google to keep your account secure. No password needed.
-              </p>
             </CardContent>
 
             <CardFooter className="flex flex-col items-center gap-2 text-sm text-purple-600">

@@ -6,10 +6,9 @@ import { SubjectsSection } from "./components/SubjectsSection";
 import { ContactSection } from "./components/ContactSection";
 import { AdminModal } from "./components/AdminModal";
 import { Footer } from "./components/Footer";
-import SignInPage from "./components/SignInPage";
 import SignUpPage from "./components/SignUpPage";
 
-type ActivePage = "home" | "signin" | "signup";
+type ActivePage = "home" | "signup";
 
 export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -21,10 +20,8 @@ export default function App() {
     if (subject) setSelectedSubject(subject);
     if (format) setSelectedFormat(format);
 
-    const el = document.getElementById("contact");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    // Redirect user to the Sign Up page which now holds the Enrollment form
+    setActivePage("signup");
   };
 
   const handleExploreSubjects = () => {
@@ -38,16 +35,11 @@ export default function App() {
     <div className="min-h-screen bg-white text-purple-950 font-sans antialiased selection:bg-yellow-200 selection:text-purple-950">
 
       {/* Auth pages overlay */}
-      {activePage === "signin" && (
-        <SignInPage
-          onBack={() => setActivePage("home")}
-          onGoToSignUp={() => setActivePage("signup")}
-        />
-      )}
       {activePage === "signup" && (
         <SignUpPage
           onBack={() => setActivePage("home")}
-          onGoToSignIn={() => setActivePage("signin")}
+          preselectedSubject={selectedSubject}
+          preselectedFormat={selectedFormat}
         />
       )}
 
@@ -55,7 +47,6 @@ export default function App() {
       <Navbar
         onOpenEnrollment={(subj) => handleOpenEnrollment(subj)}
         onOpenAdmin={() => setIsAdminOpen(true)}
-        onOpenSignIn={() => setActivePage("signin")}
         onOpenSignUp={() => setActivePage("signup")}
       />
 
@@ -77,10 +68,7 @@ export default function App() {
         />
 
         {/* Subsection 4: Contact & Enrollment */}
-        <ContactSection
-          preselectedSubject={selectedSubject}
-          preselectedFormat={selectedFormat}
-        />
+        <ContactSection />
       </main>
 
       {/* Footer */}

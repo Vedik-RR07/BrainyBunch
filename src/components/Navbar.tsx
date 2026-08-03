@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Menu, X, ShieldCheck, LogIn, UserPlus } from "lucide-react";
+import { Menu, X, ShieldCheck, UserPlus } from "lucide-react";
 import { Logo } from "./Logo";
 
 interface NavbarProps {
   onOpenEnrollment: (subject?: string) => void;
   onOpenAdmin: () => void;
-  onOpenSignIn: () => void;
   onOpenSignUp: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenSignIn, onOpenSignUp }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenSignUp }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
@@ -97,16 +96,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenSignIn, onOpe
 
           <div className="hidden sm:flex items-center space-x-2">
             <motion.button
-              whileHover={{ scale: 1.06, translateY: -2 }}
-              whileTap={{ scale: 0.95 }}
-              type="button"
-              onClick={onOpenSignIn}
-              className="bg-white hover:bg-purple-50 text-purple-900 font-bold px-4 py-2.5 rounded-2xl border border-purple-200 transition-all flex items-center cursor-pointer text-sm shadow-sm"
-            >
-              <LogIn className="w-4 h-4 mr-2 text-purple-700" />
-              Login
-            </motion.button>
-            <motion.button
               whileHover={{ scale: 1.08, translateY: -2 }}
               whileTap={{ scale: 0.95 }}
               type="button"
@@ -151,16 +140,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenSignIn, onOpe
             ))}
 
             <div className="pt-3 border-t border-purple-100 flex flex-col space-y-2">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.96 }}
-                type="button"
-                onClick={onOpenSignIn}
-                className="w-full bg-white text-purple-900 font-bold py-3 rounded-2xl text-center text-sm border border-purple-200 flex items-center justify-center"
-              >
-                <LogIn className="w-4 h-4 mr-2" />
-                Login
-              </motion.button>
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.96 }}
