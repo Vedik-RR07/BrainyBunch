@@ -8,7 +8,7 @@ export const ACADEMY_INFO = {
   regionArea: "Irving, Las Colinas, Coppell & Dallas Area (+ Online Anywhere)",
   primaryPhone: "(469) 387-7880",
   //secondaryPhone: "(469) 555-0182",
-  email: "enroll@brainybunchacademy.com",
+  email: "lpturaga26@gmail.com",
   hourlyRate: 25,
   grades: "K – 8th Grade Focus",
   totalClasses: 5,

@@ -31,7 +31,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnrollment, onEx
               <span>Irving, TX Premier Tutoring Academy • K-8th Grade</span>
             </motion.div>*/}
 
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-purple-950 tracking-tight leading-tight">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-purple-950 tracking-tight leading-tight">
               Unlocking Every Child's <br className="hidden sm:inline" />
               <span className="text-purple-700">
                 Brilliance & Academic Confidence

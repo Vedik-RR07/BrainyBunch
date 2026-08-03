@@ -1,15 +1,10 @@
 import React from "react";
 import { motion } from "motion/react";
 import { ACADEMY_INFO } from "../data";
-import { Sparkles, MapPin, Phone, Mail, ShieldCheck } from "lucide-react";
+import { Sparkles, MapPin, Phone, Mail } from "lucide-react";
 import { Logo } from "./Logo";
 
-interface FooterProps {
-  onOpenAdmin: () => void;
-  onOpenEnrollment: () => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenEnrollment }) => {
+export const Footer: React.FC = () => {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -28,16 +23,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenEnrollment })
               "{ACADEMY_INFO.tagline}" — Serving K-8 students in Irving, Las Colinas, Coppell, and the Dallas area with in-person and live online tutoring.
             </p>
 
-            <div className="pt-2">
-              <motion.button
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={onOpenEnrollment}
-                className="bg-yellow-300 hover:bg-yellow-400 text-purple-950 font-black px-4 py-2.5 rounded-2xl text-xs transition-colors cursor-pointer border border-yellow-400 shadow"
-              >
-                Enroll Your Child
-              </motion.button>
-            </div>
           </div>
 
           {/* Col 2: Leadership & Founders */}
@@ -47,7 +32,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenEnrollment })
               Founders & Academic Leadership
             </h4>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               {ACADEMY_INFO.founders.map((founder, idx) => (
                 <div key={idx} className="flex items-start space-x-3">
                   <div className="w-8 h-8 rounded-full bg-yellow-200 text-purple-950 flex items-center justify-center font-black text-xs flex-shrink-0 border border-yellow-400">
@@ -56,7 +41,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenEnrollment })
                   <div>
                     <strong className="text-white font-bold block text-xs">{founder.name}</strong>
                     <span className="text-[10px] text-amber-300 font-semibold block">{founder.role}</span>
-                    <p className="text-[11px] text-purple-300 leading-tight mt-0.5">{founder.bio}</p>
+                    <p className="text-[11px] text-purple-300 leading-tight mt-0">{founder.bio}</p>
                   </div>
                 </div>
               ))}
@@ -108,17 +93,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenEnrollment })
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-purple-400 text-[11px] font-medium">
           <p>© {new Date().getFullYear()} Brainy Bunch Learning Academy. All rights reserved. Irving, TX.</p>
 
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={onOpenAdmin}
-              className="hover:text-amber-300 transition-colors flex items-center cursor-pointer font-bold"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 mr-1 text-cyan-300" />
-              Staff Dashboard
-            </button>
-            <span>•</span>
-            <span className="text-yellow-200 font-bold">Pricing details coming soon</span>
-          </div>
         </div>
 
       </div>

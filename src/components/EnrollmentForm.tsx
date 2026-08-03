@@ -128,10 +128,10 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
       <div className="max-w-3xl mx-auto">
 
         <div className="text-center space-y-2 mb-8">
-          <div className="inline-flex items-center space-x-2 bg-yellow-100 text-amber-900 border border-yellow-300 px-3.5 py-1 rounded-full text-xs font-black tracking-wide uppercase">
+          {/* <div className="inline-flex items-center space-x-2 bg-yellow-100 text-amber-900 border border-yellow-300 px-3.5 py-1 rounded-full text-xs font-black tracking-wide uppercase">
             <Sparkles className="w-3.5 h-3.5 text-amber-600" />
             <span>Fast & Easy Application</span>
-          </div>
+          </div> */}
           <h3 className="text-2xl sm:text-3xl font-black text-purple-950">
             Enroll Your Child in Brainy Bunch
           </h3>
