@@ -11,6 +11,13 @@ export type EnrollmentInsertPayload = Omit<EnrollmentData, "id" | "status" | "cr
   assessmentTime?: string | null;
 };
 
+export type EnrollmentQueryOptions = {
+  orderBy?: keyof SupabaseEnrollmentRow;
+  ascending?: boolean;
+  limit?: number;
+  offset?: number;
+};
+
 type SupabaseEnrollmentRow = {
   id: string;
   parent_name: string;
@@ -29,6 +36,29 @@ type SupabaseEnrollmentRow = {
   confirmation_code: string;
   created_at: string;
 };
+
+export async function getEnrollments(options: EnrollmentQueryOptions = {}) {
+  const { orderBy = "created_at", ascending = false, limit, offset } = options;
+
+  let query = supabase
+    .from("enrollments")
+    .select(
+      "id,parent_name,parent_email,parent_phone,child_name,child_grade,subject,subjects,format,preferred_time,assessment_date,assessment_time,status,confirmation_code,created_at"
+    )
+    .order(orderBy, { ascending });
+
+  if (typeof limit === "number" && typeof offset === "number") {
+    query = query.range(offset, offset + limit - 1);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return (data ?? []) as SupabaseEnrollmentRow[];
+}
 
 export function sanitizeText(value: string) {
   return value.trim().replace(/<[^>]*>/g, "");

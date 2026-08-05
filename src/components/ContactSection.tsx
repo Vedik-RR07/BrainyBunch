@@ -1,60 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "motion/react";
 import { ACADEMY_INFO } from "../data";
-import { Phone, MapPin, Clock, Send, CheckCircle2, Loader2 } from "lucide-react";
+import { Phone, MapPin, Clock } from "lucide-react";
 
 export const ContactSection: React.FC = () => {
-  
-  const [contactForm, setContactForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    subject: "General Inquiry",
-    message: "",
-  });
-
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(contactForm),
-      });
-
-      const resData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(resData.error || "Failed to send message.");
-      }
-
-      setSuccess(true);
-      setContactForm({ name: "", email: "", phone: "", subject: "General Inquiry", message: "" });
-    } catch (err: any) {
-      setError(err.message || "Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const formatOptions = [
-    { value: "In Person", label: "In Person" },
-    { value: "Online", label: "Online" },
-    { value: "Hybdrid", label: "Hybrid" },
-  ];
-  const timeWindowOptions = [
-    { value: "Weekday Morning 8AM-12PM", label: "Weekday Morning 8AM-12PM" },
-    { value: "Weekday Afternoon 12PM-5PM", label: "Weekday Afternoon 12PM-5PM" },
-    { value: "Flexible", label: "Flexible (please include preferred timing in the Notes or Specific Learning Goals section)" },
-  ];
-
   return (
     <section id="contact" className="py-16 sm:py-24 bg-yellow-50 text-purple-950 relative border-t border-purple-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -75,7 +24,7 @@ export const ContactSection: React.FC = () => {
             Get in Touch or Enroll Your Child
           </h2>
           <p className="text-purple-900/80 text-sm sm:text-base font-medium">
-            Have questions or ready to register? Give us a call, send a quick message, or submit an enrollment form below.
+            Have questions or ready to register? Give us a call or submit an enrollment form by signing up.
           </p>
         </motion.div>
 
@@ -129,117 +78,6 @@ export const ContactSection: React.FC = () => {
             </div>
           </motion.div>
 
-        </div>
-
-        <div className="max-w-2xl mx-auto bg-white border-2 border-purple-200 rounded-3xl p-6 sm:p-8 shadow-xl">
-          <h3 className="text-xl font-black text-purple-950 mb-2">Send A Quick Message</h3>
-          <p className="text-purple-900/80 text-xs sm:text-sm mb-6 font-medium">
-            Have questions about schedules, custom tutoring arrangements, or diagnostic testing?
-          </p>
-
-          {success ? (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center space-y-3">
-              <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto" />
-              <h4 className="text-lg font-black text-purple-950">Message Sent Successfully!</h4>
-              <p className="text-purple-900/80 text-xs font-medium">
-                Thank you for reaching out. A representative from Brainy Bunch Academy will get back to you shortly.
-              </p>
-              <button
-                onClick={() => setSuccess(false)}
-                className="mt-2 text-xs font-bold text-amber-700 hover:underline cursor-pointer"
-              >
-                Send Another Message
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {error && (
-                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-bold">
-                  {error}
-                </div>
-              )}
-
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-purple-950 mb-1">Your Name *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Your Full Name"
-                    value={contactForm.name}
-                    onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-purple-50/50 border border-purple-200 rounded-xl text-sm text-purple-950 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-purple-950 mb-1">Your Email *</label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="name@example.com"
-                    value={contactForm.email}
-                    onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-purple-50/50 border border-purple-200 rounded-xl text-sm text-purple-950 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  />
-                </div>
-              </div>
-
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-purple-950 mb-1">Phone Number</label>
-                  <input
-                    type="tel"
-                    placeholder="(972) 555-0199"
-                    value={contactForm.phone}
-                    onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-purple-50/50 border border-purple-200 rounded-xl text-sm text-purple-950 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-purple-950 mb-1">Inquiry Subject</label>
-                  <select
-                    value={contactForm.subject}
-                    onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-purple-50/50 border border-purple-200 rounded-xl text-sm text-purple-950 font-bold focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  >
-                    <option value="General Inquiry">General Inquiry</option>
-                    <option value="In-Person Facility Visit">In-Person Facility Visit</option>
-                    <option value="Online Tutoring Help">Online Tutoring Help</option>
-                    <option value="Diagnostic Assessment">Diagnostic Assessment</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-purple-950 mb-1">Your Message *</label>
-                <textarea
-                  rows={4}
-                  required
-                  placeholder="How can we help your child excel?"
-                  value={contactForm.message}
-                  onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                  className="w-full p-3.5 bg-purple-50/50 border border-purple-200 rounded-xl text-sm text-purple-950 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                type="submit"
-                disabled={loading}
-                className="w-full bg-yellow-300 hover:bg-yellow-400 text-purple-950 font-black py-3 rounded-2xl text-sm transition-all shadow border border-yellow-400 cursor-pointer flex items-center justify-center"
-              >
-                {loading ? (
-                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                ) : (
-                  <Send className="w-4 h-4 mr-2" />
-                )}
-                Send Inquiry Message
-              </motion.button>
-            </form>
-          )}
         </div>
 
       </div>

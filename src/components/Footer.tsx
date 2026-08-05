@@ -4,7 +4,12 @@ import { ACADEMY_INFO } from "../data";
 import { Sparkles, MapPin, Phone, Mail } from "lucide-react";
 import { Logo } from "./Logo";
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenAdmin: () => void;
+  onOpenEnrollment: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenEnrollment }) => {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -92,7 +97,22 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-purple-400 text-[11px] font-medium">
           <p>© {new Date().getFullYear()} Brainy Bunch Learning Academy. All rights reserved. Irving, TX.</p>
-
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={onOpenAdmin}
+              className="rounded-2xl bg-yellow-300 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-purple-950 transition hover:bg-yellow-400"
+            >
+              Admin Login
+            </button>
+            <button
+              type="button"
+              onClick={onOpenEnrollment}
+              className="rounded-2xl border border-purple-700 bg-purple-900/90 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-purple-100 transition hover:bg-purple-800"
+            >
+              Enroll Now
+            </button>
+          </div>
         </div>
 
       </div>

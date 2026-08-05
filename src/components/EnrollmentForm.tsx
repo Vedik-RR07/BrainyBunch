@@ -128,13 +128,18 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
             <Sparkles className="w-3.5 h-3.5 text-amber-600" />
             <span>Fast & Easy Application</span>
           </div> */}
-          <h3 className="text-2xl sm:text-3xl font-black text-purple-950">
-            Enroll Your Child in Brainy Bunch
-          </h3>
-          <p className="text-purple-900/80 text-xs sm:text-sm font-medium">
-            Fill out the simple form below. Our director in Irving will contact you within 24 hours to confirm your child's schedule.
-          </p>
         </div>
+
+        {!submittedResult && (
+          <div className="text-center space-y-2 mb-8">
+            <h3 className="text-2xl sm:text-3xl font-black text-purple-950">
+              Enroll Your Child in Brainy Bunch
+            </h3>
+            <p className="text-purple-900/80 text-xs sm:text-sm font-medium">
+              Fill out the simple form below. Our director in Irving will contact you within 24 hours to confirm your child's schedule.
+            </p>
+          </div>
+        )}
 
         {submittedResult ? (
           <EnrollmentSuccessCard
