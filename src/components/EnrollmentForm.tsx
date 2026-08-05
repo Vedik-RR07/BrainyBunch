@@ -5,7 +5,8 @@ import { EnrollmentData } from "../types";
 import { SUBJECTS_LIST } from "../data";
 import { AssessmentDatePicker } from "./AssessmentDatePicker";
 import { createEnrollment, getConfirmationCode, sanitizeText, validateEnrollmentPayload } from "../lib/enrollmentService";
-import { Sparkles, CheckCircle2, User, Mail, Phone, GraduationCap, Clock, Send, Loader2, Copy, Check, CalendarDays } from "lucide-react";
+import { EnrollmentSuccessCard } from "./EnrollmentSuccessCard";
+import { Sparkles, CheckCircle2, User, Mail, Phone, GraduationCap, Clock, Send, Loader2, CalendarDays } from "lucide-react";
 
 interface EnrollmentFormProps {
   preselectedSubject?: string;
@@ -44,7 +45,6 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
   const [loading, setLoading] = useState(false);
   const [submittedResult, setSubmittedResult] = useState<EnrollmentData | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [copiedCode, setCopiedCode] = useState(false);
 
   const gradeOptions = [
     "Kindergarten",
@@ -119,14 +119,6 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
     }
   };
 
-  const handleCopyCode = () => {
-    if (submittedResult?.confirmationCode) {
-      navigator.clipboard.writeText(submittedResult.confirmationCode);
-      setCopiedCode(true);
-      setTimeout(() => setCopiedCode(false), 2000);
-    }
-  };
-
   return (
     <div id="enroll" className="mt-12 bg-white/80 backdrop-blur-md rounded-3xl border-2 border-purple-200 shadow-xl p-6 sm:p-10 relative">
       <div className="max-w-3xl mx-auto">
@@ -145,63 +137,10 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
         </div>
 
         {submittedResult ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center space-y-6 py-4"
-          >
-            <div className="w-20 h-20 mx-auto rounded-full bg-emerald-100 border-2 border-emerald-300 text-emerald-700 flex items-center justify-center shadow-md">
-              <CheckCircle2 className="w-12 h-12" />
-            </div>
-
-            <div>
-              <span className="text-xs font-black text-emerald-700 uppercase tracking-widest block mb-1">Application Submitted!</span>
-              <h4 className="text-2xl sm:text-3xl font-black text-purple-950">
-                Welcome to Brainy Bunch, {submittedResult.childName}!
-              </h4>
-              <p className="text-purple-900/80 text-sm max-w-md mx-auto mt-2 font-medium">
-                We have received your enrollment request. Our director will call you at <strong className="text-purple-950 font-bold">{submittedResult.parentPhone}</strong> shortly.
-              </p>
-            </div>
-
-            <div className="bg-purple-950 text-white rounded-2xl p-5 max-w-md mx-auto space-y-2 border border-purple-800 shadow-md">
-              <span className="text-xs text-purple-300 uppercase tracking-wider block font-bold">Official Confirmation ID</span>
-              <div className="flex items-center justify-center space-x-3">
-                <span className="text-2xl font-black tracking-wider text-yellow-200 font-mono">
-                  {submittedResult.confirmationCode}
-                </span>
-                <button
-                  onClick={handleCopyCode}
-                  className="p-1.5 bg-purple-800 hover:bg-purple-700 text-purple-200 rounded-lg transition-colors text-xs flex items-center cursor-pointer"
-                  title="Copy Code"
-                >
-                  {copiedCode ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            <div className="bg-yellow-50 rounded-2xl p-5 text-left max-w-md mx-auto space-y-2 text-xs text-purple-950 border border-yellow-200 font-medium">
-              <p><strong>Parent Name:</strong> {submittedResult.parentName}</p>
-              <p><strong>Subjects Selected:</strong> {submittedResult.subject}</p>
-              <p><strong>Grade Level:</strong> {submittedResult.childGrade}</p>
-              <p><strong>Format Preference:</strong> {submittedResult.format}</p>
-              <p><strong>Preferred Time:</strong> {submittedResult.preferredTime}</p>
-              {submittedResult.assessmentDate && submittedResult.assessmentTime && (
-                <p><strong>Initial Assessment:</strong> {submittedResult.assessmentDate} at {submittedResult.assessmentTime}</p>
-              )}
-            </div>
-
-            <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setSubmittedResult(null)}
-                className="bg-purple-950 hover:bg-purple-900 text-white font-black py-3 px-6 rounded-2xl text-sm transition-colors cursor-pointer shadow"
-              >
-                Submit Another Application
-              </motion.button>
-            </div>
-          </motion.div>
+          <EnrollmentSuccessCard
+            enrollment={submittedResult}
+            onReset={() => setSubmittedResult(null)}
+          />
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
 

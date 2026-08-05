@@ -107,36 +107,29 @@ export async function createEnrollment(payload: EnrollmentInsertPayload) {
     confirmation_code: payload.confirmationCode,
   };
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("enrollments")
-    .insert([payloadToInsert])
-    .select("*")
-    .single();
+    .insert([payloadToInsert]);
 
   if (error) {
     throw new Error(error.message);
   }
 
-  if (!data) {
-    throw new Error("Enrollment submission did not return a confirmation record.");
-  }
-
   return {
-    id: data.id,
-    parentName: data.parent_name,
-    parentEmail: data.parent_email,
-    parentPhone: data.parent_phone,
-    childName: data.child_name,
-    childGrade: data.child_grade,
-    subject: data.subject,
-    subjects: data.subjects,
-    format: data.format as EnrollmentData["format"],
-    preferredTime: data.preferred_time,
-    notes: data.notes ?? "",
-    assessmentDate: data.assessment_date ?? undefined,
-    assessmentTime: data.assessment_time ?? undefined,
-    status: data.status as EnrollmentData["status"],
-    createdAt: data.created_at,
-    confirmationCode: data.confirmation_code,
+    parentName: payload.parentName,
+    parentEmail: payload.parentEmail,
+    parentPhone: payload.parentPhone,
+    childName: payload.childName,
+    childGrade: payload.childGrade,
+    subject: payload.subject,
+    subjects: payload.subjects,
+    format: payload.format as EnrollmentData["format"],
+    preferredTime: payload.preferredTime,
+    notes: payload.notes ?? "",
+    assessmentDate: payload.assessmentDate ?? undefined,
+    assessmentTime: payload.assessmentTime ?? undefined,
+    status: "Pending",
+    createdAt: new Date().toISOString(),
+    confirmationCode: payload.confirmationCode,
   } satisfies EnrollmentData;
 }
