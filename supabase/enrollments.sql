@@ -73,3 +73,14 @@ create policy "admins_can_delete" on public.enrollments
 --    insert into public.admins (user_id, email) values ('<user-uuid-here>', 'admin@example.com');
 -- Alternatively, store admin emails and match on auth.jwt() ->> 'email' if you prefer.
 
+-- Enable RLS on admins table
+alter table public.admins enable row level security;
+
+-- Allow authenticated admins to verify their own admin status
+create policy "admins_can_read_own_record"
+on public.admins
+for select
+using (
+  auth.uid() = user_id
+);
+

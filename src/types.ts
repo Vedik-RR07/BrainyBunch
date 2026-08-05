@@ -12,7 +12,15 @@ export interface EnrollmentData {
   assessmentDate?: string;
   assessmentTime?: string;
   notes?: string;
-  status?: "Pending" | "Contacted" | "Approved" | "Enrolled" | "Archived";
+  status?:
+    | "Pending"
+    | "Contacted"
+    | "Scheduled"
+    | "Completed"
+    | "Cancelled"
+    | "Approved"
+    | "Enrolled"
+    | "Archived";
   createdAt?: string;
   confirmationCode?: string;
 }

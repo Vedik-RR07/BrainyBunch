@@ -40,6 +40,15 @@ type SupabaseEnrollmentRow = {
 export async function getEnrollments(options: EnrollmentQueryOptions = {}) {
   const { orderBy = "created_at", ascending = false, limit, offset } = options;
 
+  const userResponse = await supabase.auth.getUser();
+  const sessionResponse = await supabase.auth.getSession();
+  console.log("[DEBUG] getEnrollments current user:", userResponse);
+  console.log("[DEBUG] getEnrollments current session:", sessionResponse);
+  console.log(
+    "[DEBUG] getEnrollments auth UID:",
+    userResponse?.data?.user?.id ?? null
+  );
+
   let query = supabase
     .from("enrollments")
     .select(
@@ -52,12 +61,25 @@ export async function getEnrollments(options: EnrollmentQueryOptions = {}) {
   }
 
   const { data, error } = await query;
+  console.log("[DEBUG] getEnrollments result data:", data);
+  console.log("[DEBUG] getEnrollments result error:", error);
 
   if (error) {
     throw new Error(error.message);
   }
 
   return (data ?? []) as SupabaseEnrollmentRow[];
+}
+
+export async function updateEnrollmentStatus(id: string, status: string) {
+  const { error } = await supabase
+    .from("enrollments")
+    .update({ status })
+    .eq("id", id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
 }
 
 export function sanitizeText(value: string) {

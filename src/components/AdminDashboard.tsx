@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Logo } from "./Logo";
 import { CheckCircle2, Clock3, CalendarDays, LogOut, Sparkles, UserCircle } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
-import { getEnrollments } from "../lib/enrollmentService";
+import { getEnrollments, updateEnrollmentStatus } from "../lib/enrollmentService";
 
 interface EnrollmentRecord {
   id: string;
@@ -25,12 +25,21 @@ interface EnrollmentRecord {
 
 const pageSize = 5;
 
+const STATUS_OPTIONS = [
+  { value: "Pending", label: "Pending", color: "bg-amber-100 text-amber-800" },
+  { value: "Contacted", label: "Contacted", color: "bg-sky-100 text-sky-800" },
+  { value: "Scheduled", label: "Scheduled", color: "bg-cyan-100 text-cyan-800" },
+  { value: "Completed", label: "Completed", color: "bg-emerald-100 text-emerald-800" },
+  { value: "Cancelled", label: "Cancelled", color: "bg-rose-100 text-rose-800" },
+] as const;
+
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [enrollments, setEnrollments] = useState<EnrollmentRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const [statusUpdating, setStatusUpdating] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const loadDashboard = async () => {
@@ -38,11 +47,17 @@ export default function AdminDashboard() {
       setFetchError(null);
 
       try {
-        const { data } = await supabase.auth.getSession();
-        if (!data.session) {
+        const { data: sessionData } = await supabase.auth.getSession();
+        console.log("[DEBUG] AdminDashboard current session:", sessionData);
+
+        if (!sessionData.session) {
           navigate("/admin/login");
           return;
         }
+
+        const { data: userData } = await supabase.auth.getUser();
+        console.log("[DEBUG] AdminDashboard current user:", userData);
+        console.log("[DEBUG] AdminDashboard auth UID:", userData?.user?.id ?? null);
 
         const liveEnrollments = await getEnrollments({ orderBy: "created_at", ascending: false });
         setEnrollments(liveEnrollments);
@@ -61,6 +76,37 @@ export default function AdminDashboard() {
     loadDashboard();
   }, [navigate]);
 
+  useEffect(() => {
+    const signOutOnUnload = () => {
+      void supabase.auth.signOut();
+    };
+
+    window.addEventListener("beforeunload", signOutOnUnload);
+    window.addEventListener("pagehide", signOutOnUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", signOutOnUnload);
+      window.removeEventListener("pagehide", signOutOnUnload);
+    };
+  }, []);
+
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    setStatusUpdating((prev) => ({ ...prev, [id]: true }));
+
+    try {
+      await updateEnrollmentStatus(id, newStatus);
+      setEnrollments((current) =>
+        current.map((item) =>
+          item.id === id ? { ...item, status: newStatus } : item
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update enrollment status:", error);
+    } finally {
+      setStatusUpdating((prev) => ({ ...prev, [id]: false }));
+    }
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate("/admin/login");
@@ -69,10 +115,12 @@ export default function AdminDashboard() {
   const stats = useMemo(() => {
     const total = enrollments.length;
     const pending = enrollments.filter((item) => item.status === "Pending").length;
+    const contacted = enrollments.filter((item) => item.status === "Contacted").length;
     const scheduled = enrollments.filter((item) => item.status === "Scheduled").length;
     const completed = enrollments.filter((item) => item.status === "Completed").length;
+    const cancelled = enrollments.filter((item) => item.status === "Cancelled").length;
 
-    return { total, pending, scheduled, completed };
+    return { total, pending, contacted, scheduled, completed, cancelled };
   }, [enrollments]);
 
   const pageCount = Math.max(1, Math.ceil(enrollments.length / pageSize));
@@ -132,7 +180,7 @@ export default function AdminDashboard() {
 
       <main className="-mt-10 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {[
               {
                 label: "Total Enrollments",
@@ -147,6 +195,12 @@ export default function AdminDashboard() {
                 accent: "bg-amber-500 text-slate-950",
               },
               {
+                label: "Contacted",
+                value: stats.contacted,
+                icon: <UserCircle className="h-5 w-5 text-white" />,
+                accent: "bg-sky-500 text-slate-950",
+              },
+              {
                 label: "Scheduled",
                 value: stats.scheduled,
                 icon: <CalendarDays className="h-5 w-5 text-white" />,
@@ -157,6 +211,12 @@ export default function AdminDashboard() {
                 value: stats.completed,
                 icon: <CheckCircle2 className="h-5 w-5 text-white" />,
                 accent: "bg-emerald-500 text-slate-950",
+              },
+              {
+                label: "Cancelled",
+                value: stats.cancelled,
+                icon: <LogOut className="h-5 w-5 text-white" />,
+                accent: "bg-rose-500 text-white",
               },
             ].map((card) => (
               <div key={card.label} className="rounded-[2rem] border border-slate-200/80 bg-white p-6 shadow-sm">
@@ -239,17 +299,21 @@ export default function AdminDashboard() {
                         <td className="px-5 py-4 text-slate-600">{formatDate(row.assessment_date)}</td>
                         <td className="px-5 py-4 text-slate-600">{formatDate(row.assessment_time)}</td>
                         <td className="px-5 py-4">
-                          <span
-                            className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold ${
-                              row.status === "Completed"
-                                ? "bg-emerald-100 text-emerald-800"
-                                : row.status === "Scheduled"
-                                ? "bg-cyan-100 text-cyan-800"
-                                : "bg-amber-100 text-amber-800"
-                            }`}
+                          <select
+                            value={row.status}
+                            onChange={(event) => handleStatusChange(row.id, event.target.value)}
+                            disabled={statusUpdating[row.id]}
+                            className="min-w-[160px] rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition focus:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-200 disabled:cursor-not-allowed disabled:opacity-70"
                           >
-                            {row.status}
-                          </span>
+                            {STATUS_OPTIONS.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                            {!STATUS_OPTIONS.some((option) => option.value === row.status) && (
+                              <option key={row.status} value={row.status}>{row.status}</option>
+                            )}
+                          </select>
                         </td>
                         <td className="px-5 py-4 font-mono text-slate-700">{row.confirmation_code}</td>
                         <td className="px-5 py-4 text-slate-600">{formatCreatedAt(row.created_at)}</td>
