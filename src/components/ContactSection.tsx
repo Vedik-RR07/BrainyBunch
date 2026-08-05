@@ -95,9 +95,6 @@ export const ContactSection: React.FC = () => {
               <p className="text-xs text-purple-900 mt-1 font-semibold">
                 <a href={`tel:${ACADEMY_INFO.primaryPhone}`} className="hover:text-amber-700 underline">{ACADEMY_INFO.primaryPhone}</a>
               </p>
-              {/*<p className="text-xs text-purple-900 font-semibold">
-                <a href={`tel:${ACADEMY_INFO.secondaryPhone}`} className="hover:text-amber-700 underline">{ACADEMY_INFO.secondaryPhone}</a>
-              </p>*/}
             </div>
           </motion.div>
 

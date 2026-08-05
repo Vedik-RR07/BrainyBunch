@@ -64,9 +64,6 @@ export const LocationSection: React.FC = () => {
                       <a href={`tel:${ACADEMY_INFO.primaryPhone}`} className="hover:text-amber-300 transition-colors">
                         Primary: {ACADEMY_INFO.primaryPhone}
                       </a>
-                      <a href={`tel:${ACADEMY_INFO.secondaryPhone}`} className="hover:text-amber-300 transition-colors">
-                        Secondary: {ACADEMY_INFO.secondaryPhone}
-                      </a>
                     </div>
                   </div>
                 </div>

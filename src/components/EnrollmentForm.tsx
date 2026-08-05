@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { EnrollmentData } from "../types";
 import { SUBJECTS_LIST } from "../data";
 import { AssessmentDatePicker } from "./AssessmentDatePicker";
+import { createEnrollment, getConfirmationCode, sanitizeText, validateEnrollmentPayload } from "../lib/enrollmentService";
 import { Sparkles, CheckCircle2, User, Mail, Phone, GraduationCap, Clock, Send, Loader2, Copy, Check, CalendarDays } from "lucide-react";
 
 interface EnrollmentFormProps {
@@ -69,8 +70,9 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrorMessage("");
 
     if (selectedSubjects.length === 0) {
       setErrorMessage("Please select at least one subject.");
@@ -82,31 +84,33 @@ export const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ preselectedSubje
       return;
     }
 
-    setLoading(true);
-    setErrorMessage("");
-
-    const payload: EnrollmentData = {
-      ...formData,
-      subject: selectedSubjects.join(", "),
-      subjects: selectedSubjects,
+    const payload = {
+      parentName: sanitizeText(formData.parentName),
+      parentEmail: sanitizeText(formData.parentEmail).toLowerCase(),
+      parentPhone: sanitizeText(formData.parentPhone),
+      childName: sanitizeText(formData.childName),
+      childGrade: sanitizeText(formData.childGrade),
+      format: formData.format,
+      preferredTime: sanitizeText(formData.preferredTime),
+      notes: formData.notes ? sanitizeText(formData.notes) : null,
+      subject: sanitizeText(selectedSubjects.join(", ")),
+      subjects: selectedSubjects.map(s => sanitizeText(s)),
       assessmentDate: format(assessmentDate, "yyyy-MM-dd"),
       assessmentTime,
+      confirmationCode: getConfirmationCode(formData.childName),
     };
 
+    const validationErrors = validateEnrollmentPayload(payload);
+    if (validationErrors.length > 0) {
+      setErrorMessage(validationErrors[0]);
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const response = await fetch("/api/enrollments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const resData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(resData.error || "Failed to submit enrollment application.");
-      }
-
-      setSubmittedResult(resData.enrollment);
+      const createdEnrollment = await createEnrollment(payload);
+      setSubmittedResult(createdEnrollment);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "An unexpected error occurred. Please try again.";
       setErrorMessage(message);
