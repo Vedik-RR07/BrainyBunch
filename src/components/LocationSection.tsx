@@ -25,57 +25,32 @@ export const LocationSection: React.FC = () => {
           
           {/* Left Location Card */}
           <div className="lg:col-span-6 bg-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
+            <div className="lg:col-span-3" />
+          
+            <div className="lg:col-span-6 bg-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
             <div className="space-y-6">
               
-              <div className="flex items-center space-x-3 pb-4 border-b border-slate-800">
-                <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
-                  <Compass className="w-6 h-6" />
-                </div>
+              {/* Phone Lines */}
+              <div className="flex items-start space-x-3 pb-4 border-b border-slate-800">
+                <Phone className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="text-xl font-bold text-white">{ACADEMY_INFO.name}</h3>
-                  <p className="text-xs text-slate-400">Irving Campus & Digital Learning Hub</p>
+                  <strong className="text-white block font-semibold">Direct Phone Lines:</strong>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-300 font-medium mt-1.5">
+                    <a href={`tel:${ACADEMY_INFO.primaryPhone}`} className="hover:text-amber-300 transition-colors">
+                      {ACADEMY_INFO.primaryPhone}
+                    </a>
+                  </div>
                 </div>
               </div>
 
-              {/* Address detail */}
-              <div className="space-y-4 text-sm text-slate-200">
-                <div className="flex items-start space-x-3">
-                  <MapPin className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <strong className="text-white block font-semibold">Physical Address:</strong>
-                    <p className="text-slate-300">{ACADEMY_INFO.locationFull}</p>
-                    <p className="text-xs text-slate-400 mt-0.5">(Minutes from Las Colinas, Coppell & Highway 183 / MacArthur)</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <Globe className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <strong className="text-white block font-semibold">Service Coverage Area:</strong>
-                    <p className="text-slate-300">{ACADEMY_INFO.regionArea}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <Phone className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <strong className="text-white block font-semibold">Direct Phone Lines:</strong>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-300 font-medium mt-0.5">
-                      <a href={`tel:${ACADEMY_INFO.primaryPhone}`} className="hover:text-amber-300 transition-colors">
-                        Primary: {ACADEMY_INFO.primaryPhone}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <Mail className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <strong className="text-white block font-semibold">Email Contact:</strong>
-                    <a href={`mailto:${ACADEMY_INFO.email}`} className="text-slate-300 hover:text-amber-300 transition-colors">
-                      {ACADEMY_INFO.email}
-                    </a>
-                  </div>
+              {/* Email */}
+              <div className="flex items-start space-x-3">
+                <Mail className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <strong className="text-white block font-semibold">Email Contact:</strong>
+                  <a href={`mailto:${ACADEMY_INFO.email}`} className="text-slate-300 hover:text-amber-300 transition-colors">
+                    {ACADEMY_INFO.email}
+                  </a>
                 </div>
               </div>
 
@@ -98,51 +73,9 @@ export const LocationSection: React.FC = () => {
 
           </div>
 
-          {/* Right Simulated Interactive Map Card */}
-          <div className="lg:col-span-6 bg-slate-100 rounded-3xl p-6 sm:p-8 border border-slate-200 flex flex-col justify-between relative min-h-[380px]">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-blue-800 bg-blue-100 px-3 py-1 rounded-full uppercase tracking-wider">
-                  Interactive Irving Map View
-                </span>
-                <span className="text-xs font-semibold text-slate-500">
-                  MacArthur Blvd Corridor
-                </span>
-              </div>
-
-              {/* Map Illustration Graphic */}
-              <div className="bg-slate-900 text-white rounded-2xl p-6 h-64 flex flex-col items-center justify-center relative overflow-hidden shadow-inner border border-slate-700">
-                {/* Grid Overlay background */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:2rem_2rem] opacity-40" />
-
-                <div className="relative z-10 text-center space-y-3">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center animate-bounce">
-                    <MapPin className="w-8 h-8" />
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-black text-white">1200 N MacArthur Blvd</h4>
-                    <p className="text-xs text-amber-300 font-medium">Suite 210, Irving, TX 75061</p>
-                  </div>
-                  <span className="inline-block text-[11px] bg-slate-800 px-3 py-1 rounded-full text-slate-300 font-mono">
-                    32.8398° N, 96.9592° W
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 flex flex-col sm:flex-row gap-3">
-              <a
-                href="https://maps.google.com/?q=1200+N+MacArthur+Blvd+Irving+TX+75061"
-                target="_blank"
-                rel="noreferrer"
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl text-xs sm:text-sm transition-colors flex items-center justify-center shadow"
-              >
-                <Navigation className="w-4 h-4 mr-2" />
-                Open Google Maps Directions
-                <ExternalLink className="w-3.5 h-3.5 ml-1.5 opacity-70" />
-              </a>
-            </div>
-
+          <div className="lg:col-span-6 hidden" />
+          
+          <div className="lg:col-span-3" />
           </div>
 
         </div>

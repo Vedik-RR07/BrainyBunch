@@ -28,8 +28,8 @@ export const ContactSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Contact Info Cards Bar (Phone numbers, Location, Hours, Rate) */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+        {/* Contact Info Cards Bar (Phone numbers, Hours) */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-10">
           
           {/* Phone Numbers */}
           <motion.div
@@ -47,21 +47,7 @@ export const ContactSection: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Location */}
-          <motion.div
-            whileHover={{ scale: 1.04, translateY: -3 }}
-            className="bg-white rounded-3xl p-5 border-2 border-purple-200 shadow-sm flex items-start space-x-3"
-          >
-            <div className="p-2.5 bg-purple-100 text-purple-800 rounded-2xl flex-shrink-0">
-              <MapPin className="w-5 h-5" />
-            </div>
-            <div>
-              <strong className="text-purple-950 block font-black text-sm">Irving Academy Location:</strong>
-              <p className="text-xs text-purple-900/80 mt-1 font-medium leading-snug">
-                {ACADEMY_INFO.locationFull}
-              </p>
-            </div>
-          </motion.div>
+
 
           {/* Operating Hours */}
           <motion.div

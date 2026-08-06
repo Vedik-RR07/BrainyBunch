@@ -159,7 +159,7 @@ export default function AdminDashboard() {
                     <UserCircle className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold">Ava Morgan</p>
+                    <p className="text-sm font-bold">Priyanka</p>
                     <p className="text-xs uppercase tracking-[0.24em] text-purple-200/80">Administrator</p>
                   </div>
                 </div>
